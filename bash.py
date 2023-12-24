@@ -6,16 +6,16 @@ import traceback
 import sys
 import math  
 
-AUTH_USERS = [123456789] 
+AUTH_USERS = [6452498126] 
 TEMP_DOWNLOAD_DIRECTORY = 'temp/'
 os.makedirs(TEMP_DOWNLOAD_DIRECTORY, exist_ok=True)
 MAX_MESSAGE_LENGTH = 4096
 FINISHED_PROGRESS_STR = "✅"
 UN_FINISHED_PROGRESS_STR = "❎"
 
-api_id = 'YOUR_API_ID'
-api_hash = 'YOUR_API_HASH'
-bot_token = 'YOUR_BOT_TOKEN'
+api_id = '19975263'
+api_hash = 'c06e6a449ce68bbc5b30160a05ab8fdb'
+bot_token = '6613656845:AAEeQwKrWZVAj7_GRTvEf2P0kRP9CoSTECo'
 
 # Initialize the Client
 app = Client("my_bot", api_id=api_id, api_hash=api_hash, bot_token=bot_token)
