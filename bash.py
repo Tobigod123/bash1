@@ -18,7 +18,7 @@ UN_FINISHED_PROGRESS_STR = "❎"
 
 api_id = '19975263'
 api_hash = 'c06e6a449ce68bbc5b30160a05ab8fdb'
-bot_token = '6613656845:AAEeQwKrWZVAj7_GRTvEf2P0kRP9CoSTECo'
+bot_token = '6606583426:AAFZs9oijCO-XSQZ9G_HguYMnxSiIkmpGCg'
 app = Client("my_bot", api_id=api_id, api_hash=api_hash, bot_token=bot_token)
 
 @app.on_message(filters.command(["start"], prefixes=["/", "!", ".", ""] ) & filters.private)
