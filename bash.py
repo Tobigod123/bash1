@@ -9,7 +9,7 @@ import shutil
 from datetime import datetime
 
 bot_start_time = datetime.utcnow()
-AUTH_USERS = [6452498126] 
+AUTH_USERS = [6748415360] 
 TEMP_DOWNLOAD_DIRECTORY = 'temp/'
 os.makedirs(TEMP_DOWNLOAD_DIRECTORY, exist_ok=True)
 MAX_MESSAGE_LENGTH = 4096
@@ -28,7 +28,7 @@ async def start_bot(client, message):
     uptime_hours, remainder = divmod(int(uptime_seconds), 3600)
     uptime_minutes, uptime_seconds = divmod(remainder, 60)
     uptime_string = f"{uptime_hours} hours, {uptime_minutes} minutes, {uptime_seconds} seconds"
-    start_message = f"Hello, I'm your helpful bot.⏰ Bot Uptime: {uptime_string}\n\n"
+    start_message = f"Hello, I'm your helpless bot.⏰ Bot Uptime: {uptime_string}\n\n"
     start_message += "Here's what I can do:\n"
     start_message += "/upload - Upload a specified file or directory.\n"
     start_message += "/download - Download a file sent to me.\n"
