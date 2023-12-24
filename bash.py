@@ -6,7 +6,9 @@ import traceback
 import sys
 import math  
 import shutil
+from datetime import datetime
 
+bot_start_time = datetime.utcnow()
 AUTH_USERS = [6452498126] 
 TEMP_DOWNLOAD_DIRECTORY = 'temp/'
 os.makedirs(TEMP_DOWNLOAD_DIRECTORY, exist_ok=True)
@@ -17,10 +19,23 @@ UN_FINISHED_PROGRESS_STR = "❎"
 api_id = '19975263'
 api_hash = 'c06e6a449ce68bbc5b30160a05ab8fdb'
 bot_token = '6613656845:AAEeQwKrWZVAj7_GRTvEf2P0kRP9CoSTECo'
-
-# Initialize the Client
 app = Client("my_bot", api_id=api_id, api_hash=api_hash, bot_token=bot_token)
 
+@app.on_message(filters.command(["start"], prefixes=["/", "!", ".", ""] ) & filters.private)
+async def start_bot(client, message):
+    current_time = datetime.utcnow()
+    uptime_seconds = (current_time - bot_start_time).total_seconds()
+    uptime_hours, remainder = divmod(int(uptime_seconds), 3600)
+    uptime_minutes, uptime_seconds = divmod(remainder, 60)
+    uptime_string = f"{uptime_hours} hours, {uptime_minutes} minutes, {uptime_seconds} seconds"
+    start_message = f"Hello, I'm your helpful bot.⏰ Bot Uptime: {uptime_string}\n\n"
+    start_message += "Here's what I can do:\n"
+    start_message += "/upload - Upload a specified file or directory.\n"
+    start_message += "/download - Download a file sent to me.\n"
+    start_message += "/clear - Clear all files from storage. (Authorized users only)\n"
+    start_message += "/bash - Execute a bash command.\n\n"
+    start_message += "Please send a command to get started!"
+    await message.reply_text(start_message)
 
 @app.on_message(filters.incoming & filters.command(["upload"]))
 async def upload_message(client, message):
