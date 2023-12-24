@@ -45,7 +45,7 @@ async def upload_dir(client, message):
     if message.reply_to_message:
         message = message.reply_to_message
     cmd1 = message.text.split(" ", maxsplit=1)[1]
-    replyid = message.id
+    replyid = message_id
     if os.path.exists(cmd1):
         status_message = await message.reply_text(f"➣ Uploading the file... 📁")
         await client.send_document(
@@ -78,9 +78,9 @@ async def exec_message(client, message):
         return
 
     cmd = message.text.split(" ", maxsplit=1)[1]
-    reply_to_id = message.id
+    reply_to_id = message_id
     if message.reply_to_message:
-        reply_to_id = message.reply_to_message.id
+        reply_to_id = message.reply_to_message_id
 
     process = await asyncio.create_subprocess_shell(
         cmd,
