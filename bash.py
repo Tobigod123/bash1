@@ -5,6 +5,7 @@ import asyncio
 import traceback
 import sys
 import math  
+import shutil
 
 AUTH_USERS = [6452498126] 
 TEMP_DOWNLOAD_DIRECTORY = 'temp/'
@@ -34,6 +35,23 @@ async def download_message(client, message):
 @app.on_message(filters.incoming & filters.command(["bash"]))
 async def bash_message(client, message):
     await exec_message(client, message)
+
+@app.on_message(filters.command(["clear"], prefixes="/") & filters.user(AUTH_USERS))
+async def clear_storage(client, message):
+    if os.path.exists(TEMP_DOWNLOAD_DIRECTORY) and os.path.isdir(TEMP_DOWNLOAD_DIRECTORY):
+        try:
+            
+            for filename in os.listdir(TEMP_DOWNLOAD_DIRECTORY):
+                file_path = os.path.join(TEMP_DOWNLOAD_DIRECTORY, filename)
+                if os.path.isfile(file_path) or os.path.islink(file_path):
+                    os.unlink(file_path)
+                elif os.path.isdir(file_path):
+                    shutil.rmtree(file_path)
+            await message.reply_text("✅ Storage cleared successfully.")
+        except Exception as e:
+            await message.reply_text(f"❌ An error occurred while clearing storage: {e}")
+    else:
+        await message.reply_text("❌ Storage directory does not exist.")
 
 
 async def upload_dir(client, message):
@@ -65,27 +83,20 @@ async def upload_dir(client, message):
         await message.reply_text("**File Directory Not Found**\n```{}```".format(cmd1))
 
 
-async def download_dir(client, message):
-    if message.reply_to_message:
-        reply = await message.reply_text("➣ Downloading the file... 🚴‍♀️")
-
-        downloaded_file_path = await client.download_media(
-            message=message.reply_to_message,
-            file_name=TEMP_DOWNLOAD_DIRECTORY,
-        )
-        await reply.edit(f"Downloaded to `{downloaded_file_path}`")
-    else:
-        await message.reply_text("**Reply to a file to download it.**")
-
 async def exec_message(client, message):
     if message.from_user.id not in AUTH_USERS:
         await message.reply_text("You're not authorized to use this command.")
         return
 
-    cmd = message.text.split(" ", maxsplit=1)[1]
-    reply_to_id = message_id
+    split_text = message.text.split(" ", maxsplit=1)
+    if len(split_text) <= 1:
+        await message.reply_text("You need to specify the command to execute after /bash.")
+        return
+
+    cmd = split_text[1]
+    reply_to_id = message.message_id
     if message.reply_to_message:
-        reply_to_id = message.reply_to_message_id
+        reply_to_id = message.reply_to_message.message_id
 
     process = await asyncio.create_subprocess_shell(
         cmd,
@@ -100,21 +111,20 @@ async def exec_message(client, message):
     if not o:
         o = "No Output"
     else:
-        o = "\n".join(o.split("\n"))
+        o = o.strip()
 
-    output = f"**Query:**\n__Command:__\n`{cmd}` \n__PID:__\n`{process.pid}`\n\n**STDERR:** \n`{e}`\n**OUTPUT:**\n{o}"
-
-    if len(output) > MAX_MESSAGE_LENGTH:
+    message_text = f"**Command:**\n`{cmd}` \n**PID:**\n`{process.pid}`\n\n**Error:**\n`{e}`\n**Output:**\n{o}"
+    if len(message_text) > MAX_MESSAGE_LENGTH:
         with open("exec.txt", "w+", encoding="utf8") as out_file:
-            out_file.write(str(output))
+            out_file.write(str(message_text))
         await client.send_document(
             chat_id=message.chat.id,
             document="exec.txt",
-            caption=cmd,
+            caption=f"Output of `{cmd}`",
             reply_to_message_id=reply_to_id
         )
         os.remove("exec.txt")
     else:
-        await message.reply_text(output)
-
+        await message.reply_text(message_text)
+        
 app.run()
