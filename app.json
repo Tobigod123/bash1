@@ -1,26 +1,7 @@
 {
-  "name": "bash",
-  "description": "hmm",
-  "keywords": ["python", "telegram", "bot"],
-  "addons": [],
-  "buildpacks": [
-    {
-      "url": "heroku/python"
-    }
-  ],
-  "scripts": {
-    "postdeploy": "python bash.py"
-  },
-  "formation": {
-    "worker": {
-      "quantity": 1,
-      "size": "free"
-    }
-  },
-  "environments": {
-    "FOO": {
-      "description": "An environment variable",
-      "required": false
-    }
-  }
+  "name": "wtfbot",
+  "description": "Gns personal use",                  
+  "keywords": ["telegram", "bash", "pyrogram"],                   
+  "addons": [ ],
+  "buildpacks": [{"url": "heroku/python"}]
 }
