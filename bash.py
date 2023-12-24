@@ -60,20 +60,17 @@ async def upload_dir(client, message):
         await message.reply_text("**File Directory Not Found**\n```{}```".format(cmd1))
 
 
-
 async def download_dir(client, message):
-  if message.reply_to_message:
+    if message.reply_to_message:
         reply = await message.reply_text("➣ Downloading the file... 🚴‍♀️")
 
         downloaded_file_path = await client.download_media(
             message=message.reply_to_message,
             file_name=TEMP_DOWNLOAD_DIRECTORY,
-            
         )
         await reply.edit(f"Downloaded to `{downloaded_file_path}`")
     else:
         await message.reply_text("**Reply to a file to download it.**")
-
 
 async def exec_message(client, message):
     if message.from_user.id not in AUTH_USERS:
