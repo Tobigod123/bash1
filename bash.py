@@ -44,18 +44,23 @@ async def upload_dir(client, message):
     u_start = time.time()
     if message.reply_to_message:
         message = message.reply_to_message
-    cmd1 = message.text.split(" ", maxsplit=1)[1]
-    replyid = message_id
+    split_text = message.text.split(" ", maxsplit=1)
+    if len(split_text) <= 1:
+        await message.reply_text("You need to specify the file or directory to upload after the command.")
+        return
+    cmd1 = split_text[1]
+    replyid = message.message_id  # changed from .id to .message_id
     if os.path.exists(cmd1):
         status_message = await message.reply_text(f"➣ Uploading the file... 📁")
-        await client.send_document(
-            chat_id=message.chat.id,
-            document=cmd1,
-            caption=cmd1,
-            reply_to_message_id=replyid,
-            
-        )
-        await status_message.delete()
+        try:
+            await client.send_document(
+                chat_id=message.chat.id,
+                document=cmd1,
+                caption=cmd1,
+                reply_to_message_id=replyid,
+            )
+        finally:
+            await status_message.delete()
     else:
         await message.reply_text("**File Directory Not Found**\n```{}```".format(cmd1))
 
