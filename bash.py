@@ -47,7 +47,7 @@ async def download_message(client, message):
     await download_dir(client, message)
 
 
-@app.on_message(filters.incoming & filters.command(["bash"]))
+@app.on_message(filters.incoming & filters.command(["shell", "run", "bash"]))
 async def bash_message(client, message):
     await exec_message(client, message)
 
