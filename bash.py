@@ -76,7 +76,7 @@ async def upload_dir(client, message):
         await message.reply_text("You need to specify the file or directory to upload after the command.")
         return
     cmd1 = split_text[1]
-    replyid = message.message_id  # changed from .id to .message_id
+    replyid = message.id  # changed from .id to .message_id
     if os.path.exists(cmd1):
         status_message = await message.reply_text(f"➣ Uploading the file... 📁")
         try:
