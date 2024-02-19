@@ -9,7 +9,7 @@ import shutil
 from datetime import datetime
 
 bot_start_time = datetime.utcnow()
-AUTH_USERS = [6748415360] 
+AUTH_USERS = [-1001897284328] 
 TEMP_DOWNLOAD_DIRECTORY = 'temp/'
 os.makedirs(TEMP_DOWNLOAD_DIRECTORY, exist_ok=True)
 MAX_MESSAGE_LENGTH = 4096
@@ -18,7 +18,7 @@ UN_FINISHED_PROGRESS_STR = "❎"
 
 api_id = '19975263'
 api_hash = 'c06e6a449ce68bbc5b30160a05ab8fdb'
-bot_token = '6606583426:AAFZs9oijCO-XSQZ9G_HguYMnxSiIkmpGCg'
+bot_token = '6704115862:AAGMzIiqZyKH5PUXoi5MsicRp6sSg0HAfDU'
 app = Client("my_bot", api_id=api_id, api_hash=api_hash, bot_token=bot_token)
 
 @app.on_message(filters.command(["start"], prefixes=["/", "!", ".", ""] ) & filters.private)
@@ -28,16 +28,10 @@ async def start_bot(client, message):
     uptime_hours, remainder = divmod(int(uptime_seconds), 3600)
     uptime_minutes, uptime_seconds = divmod(remainder, 60)
     uptime_string = f"{uptime_hours} hours, {uptime_minutes} minutes, {uptime_seconds} seconds"
-    start_message = f"Hello, I'm your helpless bot.⏰ Bot Uptime: {uptime_string}\n\n"
-    start_message += "Here's what I can do:\n"
-    start_message += "/upload - Upload a specified file or directory.\n"
-    start_message += "/download - Download a file sent to me.\n"
-    start_message += "/clear - Clear all files from storage. (Authorized users only)\n"
-    start_message += "/bash - Execute a bash command.\n\n"
-    start_message += "Please send a command to get started!"
+    start_message = f"Hello, I'm your Crunchyroll ripping bot.⏰ Bot Uptime: {uptime_string}\n\n"
     await message.reply_text(start_message)
 
-@app.on_message(filters.incoming & filters.command(["upload"]))
+@app.on_message(filters.incoming & filters.command(["ul"]))
 async def upload_message(client, message):
     await upload_dir(client, message)
 
