@@ -103,7 +103,7 @@ async def exec_message(client, message):
         return
 
     cmd = split_text[1]
-    reply_to_id = message.message_id
+    reply_to_id = message.id
     if message.reply_to_message:
         reply_to_id = message.reply_to_message.message_id
 
